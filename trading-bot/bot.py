@@ -80,15 +80,17 @@ def get_moving_averages(ticker):
 if __name__ == "__main__":
     print("Starting the trading algorithm")
     while True:
-        if pycron.is_now('30 9-15 * * 1-5', dt=datetime.now(timezone('EST'))):
+        if pycron.is_now('*/30 9-15 * * 1-5', dt=datetime.now(timezone('EST'))):
             ticker = "SPY"
             SMA_9, SMA_30 = get_moving_averages(ticker)
             if SMA_9 > SMA_30:
+                print("sup")
                 # We should buy if we don't already own the stock
                 if ticker not in [i["symbol"] for i in get_positions()]:
                     print("Currently buying", ticker)
                     buy_operation(ticker, 1)
             if SMA_9 < SMA_30:
+                print("min")
                 # We should liquidate our position if we own the stock
                 if ticker in [i["symbol"] for i in get_positions()]:
                     print("Currently liquidating our", ticker, "position")

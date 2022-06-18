@@ -2,3 +2,4 @@ yfinance==0.1.70
 requests==2.26.0
 pycron==3.0.0
 pytz==2021.3
+smtplib==1.0.0

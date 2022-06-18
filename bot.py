@@ -6,7 +6,6 @@ import time
 from datetime import datetime
 from pytz import timezone
 
-
 # Loads the config file
 CONFIG = json.load(open("./config.json")) 
 #Sets Python variables with the config file values

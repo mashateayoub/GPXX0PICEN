@@ -79,7 +79,7 @@ def get_moving_averages(ticker):
 if __name__ == "__main__":
     print("Starting the trading algorithm")
     while True:
-        if pycron.is_now('*/30 9-15 * * 1-5', dt=datetime.now(timezone('EST'))):
+        if pycron.is_now('*/30 * * * *', dt=datetime.now(timezone('EST'))):
             ticker = "SPY"
             SMA_9, SMA_30 = get_moving_averages(ticker)
             if SMA_9 > SMA_30:

@@ -1,4 +1,4 @@
-# **IBM: GPXX0PICEN : Create a Cryptocurrency Trading Algorithm in Python**
+# **IBM: GPXX0PICEN : Create a Cryptocurrency Trading Algorithm in PythoN**
 
 The prominence of Cryptocurrencies as a means of transaction and investment vehicle has seen astronomical growth in recent years - but what is it and how is it different than the traditional currencies we're used to? The currencies you are familar with and likely use on a day-to-day basis, such as the US Dollar and the Euro, are known as *fiat currencies*. They are issued by the government and there exists a central authority, such as a central bank, to regulate and govern it's use. In stark contrast, a defining feature of a *Cryptocurrency* is that there is no central regulatory authority. Instead, transactions are held in a ledger or database which is secured cryptographically. Both types of currencies have their advantages and disadvantages.
 

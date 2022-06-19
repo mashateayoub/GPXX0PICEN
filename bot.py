@@ -75,8 +75,9 @@ if __name__ == "__main__":
     print("Starting the trading algorithm")
     while True:
         if pycron.is_now('*/30 * * * *', dt=datetime.now(timezone('EST'))):
-            ticker = "BTC-USD"
-            SMA_4, SMA_12 = get_moving_averages(ticker)
+            YFticker = "BTC-USD"
+            ticker = "BTCUSD"
+            SMA_4, SMA_12 = get_moving_averages(YFticker)
             if SMA_4 > SMA_12:
                 print("sup")
                 # We should buy if we don't already own the stock

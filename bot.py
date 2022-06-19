@@ -75,14 +75,14 @@ if __name__ == "__main__":
     print("Starting the trading algorithm")
     while True:
         if pycron.is_now('*/30 * * * *', dt=datetime.now(timezone('EST'))):
-            ticker = "BTCUSD"
+            ticker = "BTC-USD"
             SMA_4, SMA_12 = get_moving_averages(ticker)
             if SMA_4 > SMA_12:
                 print("sup")
                 # We should buy if we don't already own the stock
                 if ticker not in [i["symbol"] for i in get_orders()]:
                     print("Currently buying", ticker)
-                    buy_operation(ticker, 1)
+                    buy_operation(ticker, 0.0001)
             if SMA_4 < SMA_12:
                 print("min")
                 # We should liquidate our position if we own the stock

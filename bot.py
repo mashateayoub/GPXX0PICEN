@@ -63,14 +63,9 @@ def get_positions():
 
 
 def get_moving_averages(ticker):
-    """
-    calculates the 9 day and 30 days moving average of the specified ticker
-    :param ticker: stock ticker
-    :return: returns (9 days moving average, 30 days moving average)
-    """
     data = yf.download(ticker, period="3mo", interval='1h')  # Download the last 3months worht of data for the ticker
-    data['SMA_4'] = data['Close'].rolling(window=4, min_periods=1).mean()   # Compute a 9-day Simple Moving Average with pandas
-    data['SMA_12'] = data['Close'].rolling(window=12, min_periods=1).mean()  # Compute a 30-day Simple Moving Average with pandas
+    data['SMA_4'] = data['Close'].rolling(window=4, min_periods=1).mean()   # Compute a 4-hours Simple Moving Average with pandas
+    data['SMA_12'] = data['Close'].rolling(window=12, min_periods=1).mean()  # Compute a 12-hours Simple Moving Average with pandas
     SMA_4 = float(data.tail(1)["SMA_4"])  # Get the latest calculated 9 days Simple Moving Average
     SMA_12 = float(data.tail(1)["SMA_12"]) # Get the latest 30 days Simple Moving Average
     return SMA_4, SMA_12
@@ -78,6 +73,7 @@ def get_moving_averages(ticker):
 
 if __name__ == "__main__":
     print("Starting the trading algorithm")
+    print(get_positions())
     while True:
         if pycron.is_now('*/30 * * * *', dt=datetime.now(timezone('EST'))):
             ticker = "SPY"

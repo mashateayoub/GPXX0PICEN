@@ -69,11 +69,11 @@ def get_moving_averages(ticker):
     :return: returns (9 days moving average, 30 days moving average)
     """
     data = yf.download(ticker, period="3mo", interval='1h')  # Download the last 3months worht of data for the ticker
-    data['SMA_9'] = data['Close'].rolling(window=9, min_periods=1).mean()   # Compute a 9-day Simple Moving Average with pandas
-    data['SMA_30'] = data['Close'].rolling(window=30, min_periods=1).mean()  # Compute a 30-day Simple Moving Average with pandas
-    SMA_9 = float(data.tail(1)["SMA_9"])  # Get the latest calculated 9 days Simple Moving Average
-    SMA_30 = float(data.tail(1)["SMA_30"]) # Get the latest 30 days Simple Moving Average
-    return SMA_9, SMA_30
+    data['SMA_4'] = data['Close'].rolling(window=4, min_periods=1).mean()   # Compute a 9-day Simple Moving Average with pandas
+    data['SMA_12'] = data['Close'].rolling(window=12, min_periods=1).mean()  # Compute a 30-day Simple Moving Average with pandas
+    SMA_4 = float(data.tail(1)["SMA_4"])  # Get the latest calculated 9 days Simple Moving Average
+    SMA_12 = float(data.tail(1)["SMA_12"]) # Get the latest 30 days Simple Moving Average
+    return SMA_4, SMA_12
 
 
 if __name__ == "__main__":
@@ -81,14 +81,14 @@ if __name__ == "__main__":
     while True:
         if pycron.is_now('*/30 * * * *', dt=datetime.now(timezone('EST'))):
             ticker = "SPY"
-            SMA_9, SMA_30 = get_moving_averages(ticker)
-            if SMA_9 > SMA_30:
+            SMA_4, SMA_12 = get_moving_averages(ticker)
+            if SMA_4 > SMA_12:
                 print("sup")
                 # We should buy if we don't already own the stock
                 if ticker not in [i["symbol"] for i in get_positions()]:
                     print("Currently buying", ticker)
                     buy_operation(ticker, 1)
-            if SMA_9 < SMA_30:
+            if SMA_4 < SMA_12:
                 print("min")
                 # We should liquidate our position if we own the stock
                 if ticker in [i["symbol"] for i in get_positions()]:

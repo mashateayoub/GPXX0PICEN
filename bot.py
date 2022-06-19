@@ -68,7 +68,7 @@ def get_moving_averages(ticker):
     :param ticker: stock ticker
     :return: returns (9 days moving average, 30 days moving average)
     """
-    data = yf.download(ticker, period="3mo", interval='1d')  # Download the last 3months worht of data for the ticker
+    data = yf.download(ticker, period="3mo", interval='1h')  # Download the last 3months worht of data for the ticker
     data['SMA_9'] = data['Close'].rolling(window=9, min_periods=1).mean()   # Compute a 9-day Simple Moving Average with pandas
     data['SMA_30'] = data['Close'].rolling(window=30, min_periods=1).mean()  # Compute a 30-day Simple Moving Average with pandas
     SMA_9 = float(data.tail(1)["SMA_9"])  # Get the latest calculated 9 days Simple Moving Average

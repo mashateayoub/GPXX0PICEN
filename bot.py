@@ -49,12 +49,12 @@ def close_position(ticker):
     return requests.request("DELETE", url, headers=headers).json()   
 
 
-def get_orders():
+def get_positions():
     """
     sends a GET request to "/v2/positions" and returns the current positions that are open in our account
     :return: the positions that are held in the alpaca trading account
     """
-    url = BASE_URL + "/v2/orders"
+    url = BASE_URL + "/v2/positions"
     headers = {
         'APCA-API-KEY-ID': API_KEY,
         'APCA-API-SECRET-KEY': SECRET_KEY,
@@ -74,20 +74,21 @@ def get_moving_averages(ticker):
 if __name__ == "__main__":
     print("Starting the trading algorithm")
     while True:
-        if pycron.is_now('*/30 * * * *', dt=datetime.now(timezone('EST'))):
+        if pycron.is_now('*/1 * * * *', dt=datetime.now(timezone('EST'))):
             YFticker = "BTC-USD"
             ticker = "BTCUSD"
             SMA_4, SMA_12 = get_moving_averages(YFticker)
+            print(get_positions())
             if SMA_4 > SMA_12:
                 print("sup")
                 # We should buy if we don't already own the stock
-                if ticker not in [i["symbol"] for i in get_orders()]:
+                if ticker not in [i["symbol"] for i in get_positions()]:
                     print("Currently buying", ticker)
                     buy_operation(ticker, 0.0001)
             if SMA_4 < SMA_12:
                 print("min")
                 # We should liquidate our position if we own the stock
-                if ticker in [i["symbol"] for i in get_orders()]:
+                if ticker in [i["symbol"] for i in get_positions()]:
                     print("Currently liquidating our", ticker, "position")
                     close_position(ticker)
             time.sleep(60) # Making sure we don't run the logic twice in a minute

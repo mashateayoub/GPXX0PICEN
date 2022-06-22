@@ -72,24 +72,23 @@ def get_moving_averages(ticker):
 
 
 if __name__ == "__main__":
-    print("Starting the trading algorithm")
+    print("Starting the trading algorithm: Checking every 15 min / buying 0.01 (~200$) shares")
     while True:
-        if pycron.is_now('*/1 * * * *', dt=datetime.now(timezone('EST'))):
+        if pycron.is_now('*/15 * * * *', dt=datetime.now(timezone('EST'))):
             YFticker = "BTC-USD"
             ticker = "BTCUSD"
             SMA_4, SMA_12 = get_moving_averages(YFticker)
-            print(get_positions())
             if SMA_4 > SMA_12:
-                print("sup")
+                print("SMA_4 > SMA_12")
                 # We should buy if we don't already own the stock
                 if ticker not in [i["symbol"] for i in get_positions()]:
                     print("Currently buying", ticker)
-                    buy_operation(ticker, 0.0001)
+                    buy_operation(ticker, 0.01)
             if SMA_4 < SMA_12:
-                print("min")
+                print("SMA_4 < SMA_12")
                 # We should liquidate our position if we own the stock
                 if ticker in [i["symbol"] for i in get_positions()]:
-                    print("Currently liquidating our", ticker, "position")
+                    print("Currently liquidating our ", ticker, " position")
                     close_position(ticker)
             time.sleep(60) # Making sure we don't run the logic twice in a minute
         else:

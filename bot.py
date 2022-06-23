@@ -64,32 +64,30 @@ def get_positions():
 
 def get_moving_averages(ticker):
     data = yf.download(ticker, period="3mo", interval='1h')  # Download the last 3months worht of data for the ticker
-    data['SMA_4'] = data['Close'].rolling(window=4, min_periods=1).mean()   # Compute a 4-hours Simple Moving Average with pandas
-    data['SMA_12'] = data['Close'].rolling(window=12, min_periods=1).mean()  # Compute a 12-hours Simple Moving Average with pandas
-    SMA_4 = float(data.tail(1)["SMA_4"])  # Get the latest calculated 9 days Simple Moving Average
-    SMA_12 = float(data.tail(1)["SMA_12"]) # Get the latest 30 days Simple Moving Average
-    return SMA_4, SMA_12
+    data['SMA_6'] = data['Close'].rolling(window=6, min_periods=1).mean()   # Compute a 6-hours Simple Moving Average with pandas
+    data['SMA_24'] = data['Close'].rolling(window=24, min_periods=1).mean()  # Compute a 24-hours Simple Moving Average with pandas
+    SMA_6 = float(data.tail(1)["SMA_6"])  # Get the latest calculated 4 hours Simple Moving Average
+    SMA_24 = float(data.tail(1)["SMA_24"]) # Get the latest 12 hours Simple Moving Average
+    return SMA_6, SMA_24
 
 
 if __name__ == "__main__":
     print("Starting the trading algorithm: Checking every 15 min / buying 0.01 (~200$) shares")
     while True:
-        if pycron.is_now('*/15 * * * *', dt=datetime.now(timezone('EST'))):
+        if pycron.is_now('*/1 * * * *', dt=datetime.now(timezone('UTC'))):
             YFticker = "BTC-USD"
             ticker = "BTCUSD"
-            SMA_4, SMA_12 = get_moving_averages(YFticker)
-            if SMA_4 > SMA_12:
-                print("SMA_4 > SMA_12")
+            SMA_6, SMA_24 = get_moving_averages(YFticker)
+            if SMA_6 > SMA_24:
                 # We should buy if we don't already own the stock
                 if ticker not in [i["symbol"] for i in get_positions()]:
-                    print("Currently buying", ticker)
-                    buy_operation(ticker, 0.01)
-            if SMA_4 < SMA_12:
-                print("SMA_4 < SMA_12")
+                    print(pycron.datetime.now(), "Currently buying", ticker)
+                    # buy_operation(ticker, 0.01)
+            if SMA_6 < SMA_24:
                 # We should liquidate our position if we own the stock
                 if ticker in [i["symbol"] for i in get_positions()]:
-                    print("Currently liquidating our ", ticker, " position")
-                    close_position(ticker)
+                    print(pycron.datetime.now(), "Currently liquidating our ", ticker, " position")
+                    # close_position(ticker)
             time.sleep(60) # Making sure we don't run the logic twice in a minute
         else:
             time.sleep(20)  # Check again in 20 seconds

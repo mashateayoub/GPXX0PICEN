@@ -72,7 +72,7 @@ def get_moving_averages(ticker):
 
 
 if __name__ == "__main__":
-    print("Starting the trading algorithm: Checking every 15 min / buying 0.01 (~200$) shares")
+    print("Starting the trading algorithm: Checking every 15 min / buying 0.1 BTC shares")
     while True:
         if pycron.is_now('*/1 * * * *', dt=datetime.now(timezone('UTC'))):
             YFticker = "BTC-USD"

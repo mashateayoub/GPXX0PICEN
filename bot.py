@@ -82,7 +82,7 @@ if __name__ == "__main__":
                 # We should buy if we don't already own the stock
                 if ticker not in [i["symbol"] for i in get_positions()]:
                     print(pycron.datetime.now(), "Currently buying", ticker)
-                    buy_operation(ticker, 0.01)
+                    buy_operation(ticker, 0.1)
             if SMA_6 < SMA_24:
                 # We should liquidate our position if we own the stock
                 if ticker in [i["symbol"] for i in get_positions()]:

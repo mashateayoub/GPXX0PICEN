@@ -79,7 +79,6 @@ if __name__ == "__main__":
             YFticker = "BTC-USD"
             ticker = "BTCUSD"
             f = open("Trace.txt", "a")
-            f.write(str(pycron.datetime.now())+" Currently buying "+str(ticker))
             SMA_6, SMA_24 = get_moving_averages(YFticker)
             if SMA_6 > SMA_24:
                 # We should buy if we don't already own the stock

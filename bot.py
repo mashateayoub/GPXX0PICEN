@@ -3,7 +3,7 @@ import json
 import yfinance as yf
 import pycron
 import time
-from datetime import datetime
+from datetime import date, datetime
 from pytz import timezone
 
 # Loads the config file
@@ -72,7 +72,7 @@ def get_moving_averages(ticker):
 
 
 if __name__ == "__main__":
-    print("Starting the trading algorithm: Checking every 15 min / buying 0.1 BTC shares")
+    print(str(date.today())+" : Starting the trading algorithm: Checking every 1min / buying 0.1 BTC shares")
     
     while True:
         if pycron.is_now('*/1 * * * *', dt=datetime.now(timezone('UTC'))):

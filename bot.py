@@ -72,8 +72,10 @@ def get_moving_averages(ticker):
 
 
 if __name__ == "__main__":
+    f = open("Trace.txt", "a")
     print(str(date.today())+" : Starting the trading algorithm: Checking every 5 minutes / buying 0.1 BTC shares (6-hours SMA / 24-hours SMA) ")
-    
+    f.write(str(date.today())+" :\t Starting the trading algorithm: Checking every 5 minutes / buying 0.1 BTC shares (6-hours SMA / 24-hours SMA) \n")
+    f.close()
     while True:
         if pycron.is_now('*/5 * * * *', dt=datetime.now(timezone('UTC'))):
             YFticker = "BTC-USD"
@@ -92,5 +94,7 @@ if __name__ == "__main__":
                     close_position(ticker)
             time.sleep(60) # Making sure we don't run the logic twice in a minute
             f.close()
+            
         else:
             time.sleep(20)  # Check again in 20 seconds
+    

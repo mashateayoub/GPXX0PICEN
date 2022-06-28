@@ -66,27 +66,27 @@ def get_moving_averages(ticker):
     """
     Calculating the long / short - term simple moving averages 
     """
-    data = yf.download(ticker, period="5d", interval='5m',progress=False)  # Download the last 5 days worth of data for the ticker
-    data['SMA_6'] = data['Close'].rolling(window=6*12, min_periods=1).mean()   # Compute a 6-hours Simple Moving Average with pandas
-    data['SMA_24'] = data['Close'].rolling(window=24*12, min_periods=1).mean()  # Compute a 24-hours Simple Moving Average with pandas
-    SMA_6 = float(data.tail(1)["SMA_6"])  # Get the latest calculated 4 hours Simple Moving Average
-    SMA_24 = float(data.tail(1)["SMA_24"]) # Get the latest 12 hours Simple Moving Average
-    return SMA_6, SMA_24
+    data = yf.download(ticker, period="3mo", interval='1d',progress=False)  # Download the last 5 days worth of data for the ticker
+    data['SMA_9'] = data['Close'].rolling(window=9, min_periods=1).mean()   # Compute a 9-days Simple Moving Average with pandas
+    data['SMA_30'] = data['Close'].rolling(window=30, min_periods=1).mean()  # Compute a 30-days Simple Moving Average with pandas
+    SMA_9 = float(data.tail(1)["SMA_9"])  # Get the latest calculated 9 days Simple Moving Average
+    SMA_30 = float(data.tail(1)["SMA_30"]) # Get the latest 30 days Simple Moving Average
+    return SMA_9, SMA_30
 
 
 if __name__ == "__main__":
-    print(str(date.today())+" : Starting the trading algorithm: Checking every 5 minutes / buying 0.1 BTC shares (6-hours SMA / 24-hours SMA) ")
+    print(str(date.today())+" : Starting the trading algorithm: Checking every 5 minutes / buying 0.1 BTC shares (9 days SMA / 30 days SMA) ")
     while True:
         if pycron.is_now('*/5 * * * *', dt=datetime.now(timezone('UTC'))):
             YFticker = "BTC-USD"
             ticker = "BTCUSD"
-            SMA_6, SMA_24 = get_moving_averages(YFticker)
-            if SMA_6 > SMA_24:
+            SMA_9, SMA_30 = get_moving_averages(YFticker)
+            if SMA_9 > SMA_30:
                 # We should buy if we don't already own the stock
                 if ticker not in [i["symbol"] for i in get_positions()]:
                     print("\n"+str(pycron.datetime.now())+":\t Currently buying "+str(ticker))
                     buy_operation(ticker, 0.1)
-            if SMA_6 < SMA_24:
+            if SMA_9 < SMA_30:
                 # We should liquidate our position if we own the stock
                 if ticker in [i["symbol"] for i in get_positions()]:
                     print("\n"+str(pycron.datetime.now())+":\t Currently liquidating our "+str(ticker)+" position ")
